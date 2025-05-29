@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Debug Form Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f7;
+      padding: 20px;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 15px;
+      margin-right: 10px;
+      padding: 10px;
+      border: none;
+      background-color: #3498db;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background-color: #95a5a6;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Student Enrollment Form (Test Mode)</h2>
+
+<form id="studentForm" onsubmit="return false;">
+  <label>Roll No:</label>
+  <input type="text" id="rollNo" onblur="mockCheckRollNo()" />
+
+  <label>Full Name:</label>
+  <input type="text" id="fullName" disabled />
+
+  <label>Class:</label>
+  <input type="text" id="class" disabled />
+
+  <label>Birth Date:</label>
+  <input type="date" id="birthDate" disabled />
+
+  <label>Address:</label>
+  <input type="text" id="address" disabled />
+
+  <label>Enrollment Date:</label>
+  <input type="date" id="enrollmentDate" disabled />
+
+  <br />
+
+  <button id="saveBtn" onclick="saveData()" disabled>Save</button>
+  <button id="updateBtn" onclick="updateData()" disabled>Update</button>
+  <button id="resetBtn" onclick="resetForm()" disabled>Reset</button>
+</form>
+
+<script>
+  function disableFields(disable = true) {
+    const ids = ["fullName", "class", "birthDate", "address", "enrollmentDate"];
+    ids.forEach(id => document.getElementById(id).disabled = disable);
+    document.getElementById("saveBtn").disabled = true;
+    document.getElementById("updateBtn").disabled = true;
+    document.getElementById("resetBtn").disabled = true;
+  }
+
+  function resetForm() {
+    document.getElementById("studentForm").reset();
+    disableFields();
+    document.getElementById("rollNo").disabled = false;
+    document.getElementById("rollNo").focus();
+  }
+
+  function mockCheckRollNo() {
+    const rollNo = document.getElementById("rollNo").value.trim();
+    if (!rollNo) return;
+
+    // Simulating behavior:
+    const exists = rollNo === "123"; // Mock existing roll no
+
+    document.getElementById("rollNo").disabled = true;
+    document.getElementById("resetBtn").disabled = false;
+
+    const inputFields = ["fullName", "class", "birthDate", "address", "enrollmentDate"];
+    inputFields.forEach(id => {
+      document.getElementById(id).disabled = false;
+    });
+
+    if (exists) {
+      // Mock filling with existing data
+      document.getElementById("fullName").value = "John Doe";
+      document.getElementById("class").value = "10";
+      document.getElementById("birthDate").value = "2010-01-01";
+      document.getElementById("address").value = "123 Main St";
+      document.getElementById("enrollmentDate").value = "2024-06-01";
+      document.getElementById("updateBtn").disabled = false;
+    } else {
+      document.getElementById("saveBtn").disabled = false;
+      document.getElementById("fullName").focus();
+    }
+  }
+
+  function saveData() {
+    alert("Mock Save Successful!");
+    resetForm();
+  }
+
+  function updateData() {
+    alert("Mock Update Successful!");
+    resetForm();
+  }
+
+  window.onload = resetForm;
+</script>
+
+</body>
+</html>
